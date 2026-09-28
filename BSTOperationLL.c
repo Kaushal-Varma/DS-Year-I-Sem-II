@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-/*
-  STILL
-   IN
-DEVELOPMENT
-*/
-
-
 struct node {
     int data;
     struct node *l1, *l2;
@@ -34,6 +26,47 @@ void insert(struct node *temp, struct node *ptr) {
         }
     }
 }
+
+struct node* delete(struct node* root, int data) {
+    struct node* temp;
+
+    if (root==NULL) {
+        printf("%d not found\n", data);
+        return root;
+    }
+    
+    if (data < root->data)
+        root->l1 = delete(root->l1, data);
+    else if (data > root->data)
+        root->l2 = delete(root->l2, data);
+    else {
+        if (root->l1 == NULL && root->l2 == NULL) {
+            free(root);
+            root = NULL; // No dangling ptr
+        }
+        else if (root->l1 == NULL) {
+            temp = root;
+            root=root->l2;
+            free(temp);
+        }
+        else if (root->l2 == NULL) {
+            temp = root;
+            root=root->l1;
+            free(temp);
+        }
+        else {
+            temp=root->l2;
+
+            while (temp->l1 != NULL)
+                temp=temp->l1;
+            
+                root->data = temp->data;
+                root->l2 = delete(root->l2, temp->data);
+        }
+    }
+    return root;
+}
+
 
 void inorder(struct node *root) {
     if (root == NULL)
@@ -85,7 +118,7 @@ int search(struct node *root, int data) {
 
 
 int main(void) {
-    int ch;
+    int ch, data;
 
     while(1) {
         printf("\n1. Insert\n2. Delete\n3. Search\n4. InOrder\n5. PreOrder\n6. PostOrder\n7. Exit\n");
@@ -102,10 +135,50 @@ int main(void) {
 
                 break;
             case 2:
-                return 0;
+                printf("Enter data(delete): ");
+                scanf("%d", &data);
+
+                root = delete(root, data);
                 break;
             
             case 3:
+                printf("Enter data(search): ");
+                scanf("%d", &data);
+
+                search(root, data);
+                break;
+            
+            case 4:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else {
+                    inorder(root);
+                    printf("\n");
+                }
+                break;
+            
+            case 5:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else {
+                    preorder(root);
+                    printf("\n");
+                }
+                break;
+            
+            case 6:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else {
+                    postorder(root);
+                    printf("\n");
+                }
+                break;
+
+            case 7: return 0;
+            default: printf("Invalid Input\n");
+
+
                 
         }
     }
