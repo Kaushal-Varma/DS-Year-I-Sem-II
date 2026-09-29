@@ -28,7 +28,6 @@ void insert(struct node *temp, struct node *ptr) {
 }
 
 struct node* delete(struct node* root, int data) {
-    struct node* temp;
 
     if (root==NULL) {
         printf("%d not found\n", data);
