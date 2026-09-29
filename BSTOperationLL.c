@@ -69,7 +69,7 @@ struct node* delete(struct node* root, int data) {
 
 void inorder(struct node *root) {
     if (root == NULL)
-        return 0;
+        return;
     else {
         inorder(root->l1);
         printf("%d", root->data);
@@ -79,7 +79,7 @@ void inorder(struct node *root) {
 
 void preorder(struct node *root) {
     if (root == NULL)
-        return 0;
+        return;
     else {
         printf("%d", root->data);
         preorder(root->l1);
@@ -89,7 +89,7 @@ void preorder(struct node *root) {
 
 void postorder(struct node *root) {
     if (root == NULL)
-        return 0;
+        return;
     else {
         postorder(root->l1);
         postorder(root->l2);
